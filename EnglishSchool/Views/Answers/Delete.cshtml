@@ -1,0 +1,48 @@
+﻿@model EnglishSchool.Models.Answer
+
+@{
+    ViewBag.Title = "Видалити відповідь";
+}
+
+<h2>Видалити</h2>
+
+<h3>Ви упевнені, що бажаєте видалити цю відповідь?</h3>
+<div>
+    <h4>Відповідь</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Запитання
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Question.Text)
+        </dd>
+
+        <dt>
+            Відповідь
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            Вірна
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Correct)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Видалити" class="btn btn-default" /> |
+            @Html.ActionLink("Повернутися до списку", "Index")
+        </div>
+    }
+</div>

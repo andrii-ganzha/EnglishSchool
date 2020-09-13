@@ -1,0 +1,93 @@
+﻿@model EnglishSchool.Models.Answer
+
+@{
+    ViewBag.Title = "Дадати відповідь";
+}
+
+<h2>Додати</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Відповідь</h4>
+    <hr />
+
+    <div class="form-group">
+        @Html.Label("Тема", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("QuizID", null, htmlAttributes: new { @class = "form-control", id = "quiz" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.QuestionID, "Запитання", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("QuestionID", null, htmlAttributes: new { @class = "form-control", id = "question" })
+            @Html.ValidationMessageFor(model => model.QuestionID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Text, "Відповідь", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.value, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Correct, "Вірна", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Correct)
+                @Html.ValidationMessageFor(model => model.Correct, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Додати" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Повернутися до списку", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $(function () {
+        $('#quiz').change(function () {
+            //получаем выбранный id
+            var id = $(this).val();
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("GetItems")/' + id,
+                success: function (data) {
+                    //заменяем содержимое присланным частичным представлением
+                    $('#question').replaceWith(data);
+                }
+            });
+        });
+    })
+</script>
+}

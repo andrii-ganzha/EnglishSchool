@@ -1,0 +1,42 @@
+﻿@model EnglishSchool.Models.Word
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Word</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Quiz.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quiz.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Translate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Translate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.WordID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

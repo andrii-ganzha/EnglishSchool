@@ -1,0 +1,53 @@
+﻿@model EnglishSchool.Models.Word
+
+@{
+    ViewBag.Title = "Додати слово";
+}
+
+<h2>Додати</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Слово</h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuizID, "Урок", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("QuizID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.QuizID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Text, "Слово", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Translate,"Переклад", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Translate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Translate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Додати" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Повернутися до списку", "Index")
+</div>

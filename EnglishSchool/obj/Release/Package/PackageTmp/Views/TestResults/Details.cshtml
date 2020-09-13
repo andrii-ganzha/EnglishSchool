@@ -1,0 +1,98 @@
+﻿@model EnglishSchool.Models.TestResult
+@{
+    ViewBag.Title = "Результат тесту";
+}
+@{
+    string mark = "yellow";
+    if (ViewBag.Mark < 60)
+    {
+        mark = "red";
+    }
+    if (ViewBag.Mark > 90)
+    {
+        mark = "green";
+    }
+}
+<h2>Результати тесту @Html.ActionLink("Всі мої тести", "Index", new { }, new { @class = "btn btn-primary", @style = "font-weight:bold" })</h2>
+
+<div>
+    <h4>Тест</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Тема
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quiz.Name)
+        </dd>
+
+        <dt>
+            Дата, час складання
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            Оцінка
+        </dt>
+
+        <dd>
+            <p style="color:@mark">@Model.MarkPerc%</p>
+        </dd>
+
+        <dt>
+            Відповіді
+        </dt>
+
+        <dd>
+            @foreach (var item in Model.Answers)
+        {
+            string alert = "success";
+            if (item.Correct == false)
+            {
+                alert = "danger";
+            }
+            <div class="panel panel-@alert">
+                <div class=" = panel-heading">
+                    <p class="panel-title">
+                        <b>@item.Question.Text</b>
+                        @if (item.Correct == true)
+                    {
+                    <p>Правильно!</p>
+            }
+            else
+            {
+
+                @Html.TextArea("\tПравильно!")
+
+        }
+                        </p>
+                    </div>
+                    <div class="panel-body">
+                        @item.Text
+                        @*<h5>@item.value бали</h5>*@
+
+                    </div>
+                </div>
+
+        }
+        </dd>
+        <dt>
+            Графік тестів
+        </dt>
+        <dd>
+            <img src="@Url.Action("GetChart", new { quizID = Model.QuizID})" />
+        </dd>
+
+    </dl>
+
+
+
+</div>
+<p>
+    @Html.ActionLink("Всі мої тести", "Index", new { }, new { @class = "btn btn-primary", @style = "font-weight:bold" })
+</p>

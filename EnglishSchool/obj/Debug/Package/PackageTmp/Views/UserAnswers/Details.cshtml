@@ -1,0 +1,50 @@
+﻿@model EnglishSchool.Models.UserAnswer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>UserAnswer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Answer.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Change)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Change)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.k)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.k)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

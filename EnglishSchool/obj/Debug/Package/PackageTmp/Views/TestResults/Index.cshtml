@@ -1,0 +1,55 @@
+﻿@model IEnumerable<EnglishSchool.Models.TestResult>
+
+@{
+    ViewBag.Title = "Мої тести";
+}
+
+
+<h2>Мої тести @Html.ActionLink("Мій прогрес", "MyStatistic", new { }, new { @class = "btn btn-primary", @style = "font-weight:bold" }) </h2>
+
+<p>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Тема
+        </th>
+        <th>
+            Дата
+        </th>
+        <th>
+            Оцінка
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        string mark = "warning";
+        if (item.MarkPerc < 60)
+        {
+            mark = "danger";
+        }
+        if (item.MarkPerc > 90)
+        {
+            mark = "success";
+        }
+        <tr class="@mark">
+            <td>
+                @Html.DisplayFor(modelItem => item.Quiz.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MarkPerc)%
+            </td>
+            <td>
+                @Html.ActionLink("Детальніше", "Details", new { id = item.TestResultID }, new { @class = "btn btn-" + mark + " btn-xs" })
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.ActionLink("Мій прогрес", "MyStatistic", new { }, new { @class = "btn btn-primary", @style = "font-weight:bold" })

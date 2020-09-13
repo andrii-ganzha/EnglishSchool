@@ -1,0 +1,35 @@
+﻿@model IEnumerable<EnglishSchool.Models.TestResult>
+@{
+    ViewBag.Title = "Мій прогрес";
+}
+
+<h2>Мій прогрес</h2>
+
+<h3>Мої результати</h3>
+<div>
+    <img src="@Url.Action("GetChart")" />
+    <h3>Що потрібно повторити</h3>
+    <table class="table">
+      
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Quiz.Name)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MarkPerc)%
+                </td>
+                <td> @Html.ActionLink("Спробувати знову!", "../Questions/Test", new { QuizID = item.QuizID }, new { @class = "btn btn-warning btn-xs", @style = "font-weight:bold" }) </td>
+            </tr>
+        }
+        </table>
+</div>
+<div>
+
+</div>
+

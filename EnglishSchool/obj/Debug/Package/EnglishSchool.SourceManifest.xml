@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\Андрей\source\repos\EnglishSchool\EnglishSchool\obj\Debug\Package\PackageTmp" />
+  <setAcl path="C:\Users\Андрей\source\repos\EnglishSchool\EnglishSchool\obj\Debug\Package\PackageTmp" setAclResourceType="Directory" />
+  <setAcl path="C:\Users\Андрей\source\repos\EnglishSchool\EnglishSchool\obj\Debug\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
+</sitemanifest>

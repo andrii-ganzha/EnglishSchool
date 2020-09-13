@@ -1,0 +1,171 @@
+﻿@model EnglishSchool.ViewModels.QuizIndexData
+
+@if(User.IsInRole("Admin"))
+    {
+    ViewBag.Title = "Уроки";
+}
+else
+{
+    ViewBag.Title = "Мої уроки";
+}
+<h2>@ViewBag.Title</h2>
+
+@if (User.IsInRole("Admin"))
+{
+<p>
+    @Html.ActionLink("Додати урок", "Create")
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Назва
+        </th>
+        <th>
+            Опис
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Quizzes)
+{
+    string selectedRow = "";
+    if(item.QuizID == ViewBag.QuizID)
+    {
+        selectedRow = "success";
+    }
+    <tr class="@selectedRow">
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Вибрати", "Index", new { id = item.QuizID }) |
+            @Html.ActionLink("Детальніше", "Details", new { id = item.QuizID }) |
+            @Html.ActionLink("Редагувати", "Edit", new { id = item.QuizID }) |
+            @Html.ActionLink("Видалити", "Delete", new { id = item.QuizID}) 
+        </td>
+    </tr>
+}
+
+</table>
+    if(Model.Questions != null)
+    {
+        <h3>Запитання обраного уроку</h3>
+        @Html.ActionLink("Додати запитання", "Create", "Questions");
+        if(Model.Questions.Count() == 0)
+        {
+            <h4>Запитання відсутні!</h4>
+        }
+        else
+        {
+            <table class="table">
+                <tr>
+                    <th>Текст запитання</th>
+                    <th></th>
+                </tr>
+
+                @foreach(var item in Model.Questions)
+                {
+                    string selectedRow = "";
+                    if(item.QuestionID == ViewBag.QuestionID)
+                    {
+                        selectedRow = "success";
+                    }
+                    <tr class="@selectedRow">
+                        <td>
+                            @item.Text
+                        </td>
+                        <td>
+                            @Html.ActionLink("Вибрати", "Index", new { QuestionID = item.QuestionID, id = ViewBag.id }) |
+                            @Html.ActionLink("Редагувати", "../Questions/Edit", new { id = item.QuestionID }) |
+                            @Html.ActionLink("Видалити", "../Questions/Delete", new { id = item.QuestionID })
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        }
+        if(Model.Answers!=null)
+        {
+            <h3>Відповіді обраного запитання</h3>
+            @Html.ActionLink("Додати відповідь", "Create", "Answers");
+            if(Model.Answers.Count() == 0)
+            {
+                <h4>Відповіді вісутні!</h4>
+            }
+            else
+            {
+                <table class="table">
+                    <tr>
+                        <th>Текст відповіді</th>
+                        <th>Правильний</th>
+                        <th></th>
+                    </tr>
+
+                    @foreach(var item in Model.Answers)
+                    {
+                    <tr>
+                        <td>
+                            @item.Text
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Correct)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Редагувати", "../Answers/Edit", new { id = item.AnswerID }) |
+                            @Html.ActionLink("Видалити", "../Answers/Delete", new { id = item.AnswerID })
+                        </td>
+                    </tr>
+                    }
+                </table>
+            }
+        }
+    }
+
+
+}
+else
+{
+    foreach(var item in Model.Quizzes)
+    {
+        string alert = "info";
+        if(item.TestResults.Where(t=>t.UserID==ViewBag.UserID).Count() != 0)
+        {
+            if (item.TestResults.Where(t=>t.UserID==ViewBag.UserID).OrderBy(t => t.Date).Last().MarkPerc < 60)
+            {
+                alert = "danger";
+            }
+            else if(item.TestResults.OrderBy(t=>t.Date).Last().MarkPerc<90)
+            {
+                alert = "warning";
+            }
+            else
+            {
+                alert = "success";
+            }
+        }
+                <div class="alert alert-@alert" role="alert">
+                    <h3>@item.Name</h3>
+                    <h4>@item.Description</h4>
+                    @if (item.TestResults.Where(t=>t.UserID == ViewBag.UserID).ToList().Count>0)
+                    {
+                        var mark = @item.TestResults.Where(t => t.UserID == ViewBag.UserID).Where(t=>t.QuizID==item.QuizID).OrderBy(t => t.Date).Last().MarkPerc;
+                    <p style="font-weight:bold">Мій прогрес</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-@alert active" role="progressbar" aria-valuenow="@mark" aria-valuemin="0" aria-valuemax="100" style="width: @mark%">
+                            <p style="font-weight:bold">@mark%</p>
+                            <span class="sr-only">mark% Завершено</span>
+                        </div>
+                    </div>
+                    }
+
+                    @Html.ActionLink("Теорія", "Details", new { id = item.QuizID }, new { @class = "btn btn-primary", @style = "font-weight:bold" })
+                    @Html.ActionLink("Практика", "../Questions/Test", new { QuizID = item.QuizID }, new { @class = "btn btn-success", @style = "font-weight:bold"})
+                </div>
+    }
+}

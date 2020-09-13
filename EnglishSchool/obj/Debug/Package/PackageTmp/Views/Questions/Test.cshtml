@@ -1,0 +1,171 @@
+﻿@model IEnumerable<EnglishSchool.Models.Question>
+
+@{
+    ViewBag.Title = "Тестування";
+}
+
+<h2>Тест</h2>
+
+<h3>@Model.First().Quiz.Name</h3>
+
+<div class="nav-tabs">
+    <script type="text/javascript">
+        function Check(e)
+        {
+            document.getElementById(e).className = "active"
+
+            @*for (i=0; i<document.getElementsByName(e).cuont; i++)
+                if(document.getElementsByName(e)[i].checked)
+                    @ViewBag.answers[e]=do*@
+        }
+    </script>
+
+    <ul class="nav nav-pills">
+        @foreach (var item in Model)
+        {
+            <li id="@item.QuestionID" class="alert-danger" role="presentation"><a href="#ask_@item.QuestionID" data-toggle="tab">Запитання @(ViewBag.i++)</a></li>
+        }
+    </ul>
+    <p hidden="hidden">@(ViewBag.i = 0)</p>
+    <div class="tab-content">
+        @foreach (var item in Model)
+        {
+            <p hidden="hidden">@(ViewBag.i++);</p>
+            <div class="tab-pane" id="ask_@item.QuestionID">
+                <div class="panel panel-primary">
+                    <div class=" = panel-heading">
+                        <h4 class="panel-title">@item.Text</h4>
+                    </div>
+                    <div class="panel-body">
+                        @*@if (item.Code != null)
+            {
+                <code>
+                    @item.Code;
+                </code>
+                <br />
+            }*@
+
+                        @*@if (item.Image != null)
+                       {
+                           <br />
+                           @Html.Raw("<img  src=\"data:image/jpeg;base64,"
+            + Convert.ToBase64String(item.Image) + "\" />")
+                       }*@
+                        @foreach (var ans in item.Answers.ToList())
+        {
+            //if (item.Check == true)
+            if (item.TipeID == 1)
+            {
+                if (item.Answers.Where(a => a.Correct).Count() > 1)
+                {
+                    @*<input type="checkbox" name="@(ViewBag.i - 1)" value="@ans.AnswerID" onclick="Check(@item.QuestionID)" />@ans.Text<br />*@
+                    <input type="checkbox" name="@ViewBag.i" value="@ans.AnswerID" onclick="(Check(@item.QuestionID))" onchange="$('#EmptyDIV').load('@Url.Action("SaveAnswer")', {answerID: @ans.AnswerID.ToString()})" /> @ans.Text <br />
+}
+else
+{
+                <input type="radio" name="@ViewBag.i" value="@ans.AnswerID" onclick="Check(@item.QuestionID)" onchange="$('#EmptyDIV').load('@Url.Action("SaveRadioAnswer")', {answerID: @ans.AnswerID.ToString(), questionID: @item.QuestionID})" />@ans.Text<br />
+                @*<asp:RadioButton id="@(ViewBag.i-1)" value/>*@
+}
+}
+else if (item.TipeID == 2)
+{
+var a = ans.Text.ToLower();
+var str = a.Split();
+
+Random random = new Random();
+
+for (int i = str.Length - 1; i >= 1; i--)
+{
+int j = random.Next(i + 1);
+// обменять значения data[j] и data[i]
+var temp = str[j];
+str[j] = str[i];
+str[i] = temp;
+}
+
+SelectList sl = new SelectList(str);
+
+a = "";
+for (int i = 0; i < str.Length; i++)
+{
+a += str[i];
+                <div class="col-sm text-center">
+                    <button name="@ViewBag.i" class="btn btn-outline-primary">@str[i]</button>
+                </div>
+}
+object res = new object();
+                <p>@a</p>
+                @*@Html.ListBox((str, new MultiSelectList(str), new { id="multiSelectDropDown", multipe = "multiple"})*@
+
+string quest = ViewBag.i.ToString();
+                @Html.ListBox(quest, sl, new { id = "multiSelectDropDown", name = ViewBag.i, multipe = "multiple" });
+
+                <div class="col-sm text-center">
+                    <button id="js-button" class="btn btn-outline-primary">Получить текст</button>
+                </div>
+                <div class="col-sm" id="js-result">
+                    Результат:
+                </div>
+
+                @*<select id="multiSelectDropDown" multiple="multiple" name="Tipe" style="width : 25px">
+        @for (int i = 0; i < str.Length; i++)
+        {
+    <option>@str[i]</option>
+        }
+    </select>*@
+
+                @*<div class="chosen-container chosen-container-multi" title="" id="multiSelectDropDown_chosen" style="width: 100%;">
+        <ul class="chosen-choices">
+
+            <li class="search-field">
+                <input class="chosen-search-input" type="text" autocomplete="off" value="Select Some Options" style="width: 25px;">
+            </li>
+        </ul>
+        <div class="chosen-drop">
+            <ul class="chosen-results"></ul>
+        </div>
+    </div>*@
+
+}
+}
+                    </div>
+                    </div>
+                </div>
+        }
+    </div>
+    <hr/>
+    @Html.ActionLink("Завершити тестування", "../TestResults/GetResult", new { quizID = Model.First().QuizID }, new { @class = "btn btn-success", @style = "font-weight:bold" })
+</div>
+<div id="EmptyDIV"></div>
+
+
+@*<link rel="stylesheet" href="https://snipp.ru/cdn/bootstrap/4.3/bootstrap.min.css">
+<style type="text/css">
+    #js-result {
+        font-size: 16px;
+        line-height: 38px;
+        color: green;
+    }
+</style>*@
+
+
+@section scripts{
+
+    @*<script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>*@
+    <script>
+        $('#js-button').click(function () {
+            var value = $('#multiSelectDropDown option:selected').text();
+            $('#js-result').html('Результат: ' + value);
+        });
+    </script>
+
+
+    <script>
+        $(function () {
+            //multiselect DropDown
+            $("#multiSelectDropDown").chosen({
+                width: "100%"
+            });
+        });
+    </script>
+}

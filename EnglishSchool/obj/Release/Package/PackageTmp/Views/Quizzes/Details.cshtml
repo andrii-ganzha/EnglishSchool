@@ -1,0 +1,79 @@
+﻿@model EnglishSchool.Models.Quiz
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+@if (User.IsInRole("User")) {<h2>Теорія @Html.ActionLink("Перейти до Практики", "../Questions/Test", new { QuizID = Model.QuizID }, new { @class = "btn btn-success", @style = "font-weight:bold" }) </h2>}
+
+
+
+<div>
+    @*<h4>Quiz</h4>*@
+    <hr />
+    @*<dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>*@
+    @*@Html.Raw(Convert.FromBase64String(Convert.ToBase64String(Model.File)))*@
+
+    @Html.Raw("<iframe  src=\"data:text/html;base64,"
+                            + Convert.ToBase64String(Model.File) + "\" width=\"100%\" height=\"500\"  frameborder=\"0\"> </iframe>")
+    <h2>Слова</h2>
+    <hr />
+    @if (Model.Words.Count == 0)
+    {
+        <h3>Сьогодні слів немає:(</h3>
+    }
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p>
+            @Html.ActionLink("Додати слово", "../Words/Create")
+        </p>
+    }
+    <table class="table">
+
+
+        @foreach (var item in Model.Words)
+        {
+            <tr>
+                <td>
+                    @item.Text;
+                </td>
+                <td>
+                    @item.Translate;
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Редагувати", "../Words/Edit", new { id = item.WordID }) |
+                        @Html.ActionLink("Видалити", "../Words/Delete", new { id = item.WordID })
+                    </td>
+                }
+            </tr>
+
+        }
+    </table>
+
+
+
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Редагувати", "Edit", new { id = Model.QuizID }) |
+        @Html.ActionLink("Повернутися до списку", "Index")
+    </p>
+}
+@if (User.IsInRole("User"))
+{
+    <p>@Html.ActionLink("Перейти до Практики", "../Questions/Test", new { QuizID = Model.QuizID }, new { @class = "btn btn-success", @style = "font-weight:bold" })</p>
+}
+

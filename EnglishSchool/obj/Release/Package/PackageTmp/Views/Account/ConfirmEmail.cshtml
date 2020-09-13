@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Підтвердження електронної пошти";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div>
+    <p>
+        Дякуємо за підтвердження електронної пошти. @Html.ActionLink("Клацніть тут для входу", "Login", "Account", routeValues: new { denied = true}, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>
